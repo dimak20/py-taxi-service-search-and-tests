@@ -126,3 +126,16 @@ class PrivateManufacturerTest(TestCase):
                 response.context["manufacturer_list"]
             ), list(manufacturers)[5:10]
         )
+
+    def test_update_manufacturer(self):
+        payload = {
+            "name": "unique_name_test",
+            "country": "test_USA"
+        }
+        manufacturer = Manufacturer.objects.all().first()
+        manufacturer_url = reverse("taxi:manufacturer-update", args=[manufacturer.pk])
+        response = self.client.post(manufacturer_url, payload)
+        self.assertEqual(response.status_code, 302)
+        manufacturer.refresh_from_db()
+        self.assertEqual(manufacturer.name, payload.get("name"))
+        self.assertEqual(manufacturer.country, payload.get("country"))
