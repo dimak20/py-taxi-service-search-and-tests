@@ -133,7 +133,10 @@ class PrivateManufacturerTest(TestCase):
             "country": "test_USA"
         }
         manufacturer = Manufacturer.objects.all().first()
-        manufacturer_url = reverse("taxi:manufacturer-update", args=[manufacturer.pk])
+        manufacturer_url = reverse(
+            "taxi:manufacturer-update",
+            args=[manufacturer.pk]
+        )
         response = self.client.post(manufacturer_url, payload)
         self.assertEqual(response.status_code, 302)
         manufacturer.refresh_from_db()
